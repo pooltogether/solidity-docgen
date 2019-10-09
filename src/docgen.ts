@@ -11,6 +11,7 @@ import { Sitemap, Link } from './sitemap';
 interface Options {
   input: string;
   output: string;
+  dependencies: string[];
   templates?: string;
   exclude?: string[];
   extension: string;
@@ -25,7 +26,7 @@ interface Templates {
 }
 
 export async function docgen(options: Options) {
-  const solcOutput = await compile(options.input, options.exclude, options['solc-module'], options['solc-settings']);
+  const solcOutput = await compile(options.input, options.dependencies, options.exclude, options['solc-module'], options['solc-settings']);
   const templates = await getTemplates(options.templates);
   const readmes = await getReadmes(options.input);
 

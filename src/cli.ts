@@ -17,6 +17,14 @@ class Docgen extends Command {
       description: 'directory where contracts will be taken from',
     }),
 
+    dependencies: flags.build({
+      parse: s => s.split(',')
+    })({
+      char: 'd',
+      default: [],
+      description: 'comma separated list of dependences.  Can be globs (i.e. node_modules/@openzeppelin/**/*.sol)',
+    }),
+
     output: flags.string({
       char: 'o',
       default: 'docs',

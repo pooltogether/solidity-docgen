@@ -15,16 +15,20 @@ const outputSelection = {
 };
 
 export async function compile(
-  directory: string,
+  input: string,
+  dependencies: string[],
   ignore: string[] = [],
   solcModule: string = 'solc',
   solcSettings: object = {optimizer: {enabled: true, runs: 200}},
 ): Promise<SolcOutput> {
   const solc = await SolcAdapter.require(solcModule);
 
-  const files = await globby(path.join(directory, '**/*.sol'), {
+  const allInputs = dependencies.concat(path.join(input, '**/*.sol'))
+  const files = await globby(allInputs, {
     ignore: ignore.map(i => path.join(i, '**/*')),
   });
+
+  console.log('using files: ', files)
 
   const sources = fromPairs(await Promise.all(files.map(async file => [
     file,
